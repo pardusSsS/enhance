@@ -1,3 +1,4 @@
+import 'package:enhance/core/base/widget/app_page_builder.dart';
 import 'package:enhance/view/enhance/view/enhance_view.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: Scaffold(body: const Enhance()),
+      home: Scaffold(body: AppPagesBuilder()),
     );
   }
 }

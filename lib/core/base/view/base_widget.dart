@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:enhance/core/base/state/base_state.dart';
-import 'package:enhance/core/base/widget/appbar.dart';
+import 'package:enhance/core/base/vm/base_vm.dart';
+import 'package:enhance/core/base/widget/navbar.dart';
 import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/contants/navbar_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -45,12 +47,7 @@ class _BaseViewState extends BaseState<BaseView> {
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
       color: AppColors.APPCOLOR_BLUE_4,
-      child: Stack(
-        children: [
-          AppBarWidget(),
-          widget.onPageBuilder(context, widget.viewModel),
-        ],
-      ),
+      child: widget.onPageBuilder(context, widget.viewModel),
     );
   }
 }

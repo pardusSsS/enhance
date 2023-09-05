@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color APPCOLOR_APPBAR = Color(0x5e36aaff);
+  static const Color APPCOLOR_NAVBAR = Color(0x5e36aaff);
 
   //blue palette
   static const Color APPCOLOR_BLUE_1 = Color(0xff6730ec);
