@@ -1,4 +1,7 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:enhance/core/base/vm/base_vm.dart';
+import 'package:enhance/core/contants/navbar_constants.dart';
 import 'package:enhance/view/cloud/view/cloud_view.dart';
 import 'package:enhance/view/enhance/view/enhance_view.dart';
 import 'package:enhance/view/filter/view/filter_view.dart';
@@ -7,6 +10,11 @@ import 'package:enhance/view/resize/view/resize_view.dart';
 import 'package:flutter/material.dart';
 
 class AppPages {
+  static const String BACK_ARROW = "assets/images/svg/back-arrow.svg";
+  static const String TICK = "assets/images/svg/tick.svg";
+
+  static PageController appPageController =
+      PageController(initialPage: NavBarItems.NAVBAR_ENHANCE_INDEX);
   static List<Widget> appMainPages = [
     Filter(),
     Resize(),

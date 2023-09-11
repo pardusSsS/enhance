@@ -1,7 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/vm/base_vm.dart';
 import 'package:enhance/core/base/widget/navbar.dart';
+import 'package:enhance/core/contants/navbar_constants.dart';
 import 'package:enhance/core/contants/page_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +13,7 @@ class AppPagesBuilder extends StatefulWidget {
   State<AppPagesBuilder> createState() => _AppPagesBuilderState();
 }
 
-class _AppPagesBuilderState extends State<AppPagesBuilder> {
+class _AppPagesBuilderState extends BaseState<AppPagesBuilder> {
   final BaseViewModel _baseViewModel = BaseViewModel();
 
   @override
@@ -28,10 +30,9 @@ class _AppPagesBuilderState extends State<AppPagesBuilder> {
 
   Widget AppPagesBody() {
     return PageView(
-      controller: _baseViewModel.appPageController,
-      onPageChanged: (index) {
-        _baseViewModel.changeNavBarIndex(index: index);
-      },
+      key: const Key("AppPagesBody"),
+      controller: AppPages.appPageController,
+      physics: const ScrollPhysics(parent: NeverScrollableScrollPhysics()),
       children: AppPages.appMainPages,
     );
   }

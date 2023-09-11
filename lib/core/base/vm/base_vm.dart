@@ -11,18 +11,13 @@ abstract class BaseViewBase with Store {
   @observable
   int navBarChoosedIndex = NavBarItems.NAVBAR_ENHANCE_INDEX;
 
-  @observable
-  PageController appPageController =
-      PageController(initialPage: NavBarItems.NAVBAR_ENHANCE_INDEX);
-
   @action
   void changeNavBarIndex({required int index}) {
     navBarChoosedIndex = index;
-    print(appPageController);
-    if (appPageController.hasClients) {
-      appPageController.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-      print(navBarChoosedIndex);
+    print(navBarChoosedIndex);
+    if (AppPages.appPageController.hasClients) {
+      AppPages.appPageController.animateToPage(index,
+          duration: const Duration(milliseconds: 200), curve: Curves.linear);
     }
   }
 }

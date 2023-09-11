@@ -18,12 +18,13 @@ class NavBarWidget extends StatelessWidget {
 
   Widget buildAppBar(BuildContext context) {
     return Positioned(
-      bottom: 8,
-      right: 8,
-      left: 8,
+      key: Key("NavBar"),
+      bottom: MediaQuery.of(context).size.width * (.01),
+      right: MediaQuery.of(context).size.width * (.05),
+      left: MediaQuery.of(context).size.width * (.05),
       child: Container(
-        margin:
-            const EdgeInsetsDirectional.symmetric(vertical: 23, horizontal: 23),
+        margin: EdgeInsetsDirectional.symmetric(
+            vertical: MediaQuery.of(context).size.width * (.05)),
         width: MediaQuery.of(context).size.width * 1,
         height: MediaQuery.of(context).size.height * .09,
         decoration: BoxDecoration(
@@ -44,12 +45,11 @@ class NavBarWidget extends StatelessWidget {
         );
       }).toList();
 
-  Column buildNavBarItem(int index, Map<String, String> item) {
+  Column buildNavBarItem(int index, Map<String, dynamic> item) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.all(3),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(15)),
             color: _baseViewModel.navBarChoosedIndex == index

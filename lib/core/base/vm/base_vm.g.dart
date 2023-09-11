@@ -25,22 +25,6 @@ mixin _$BaseViewModel on BaseViewBase, Store {
     });
   }
 
-  late final _$appPageControllerAtom =
-      Atom(name: 'BaseViewBase.appPageController', context: context);
-
-  @override
-  PageController get appPageController {
-    _$appPageControllerAtom.reportRead();
-    return super.appPageController;
-  }
-
-  @override
-  set appPageController(PageController value) {
-    _$appPageControllerAtom.reportWrite(value, super.appPageController, () {
-      super.appPageController = value;
-    });
-  }
-
   late final _$BaseViewBaseActionController =
       ActionController(name: 'BaseViewBase', context: context);
 
@@ -58,8 +42,7 @@ mixin _$BaseViewModel on BaseViewBase, Store {
   @override
   String toString() {
     return '''
-navBarChoosedIndex: ${navBarChoosedIndex},
-appPageController: ${appPageController}
+navBarChoosedIndex: ${navBarChoosedIndex}
     ''';
   }
 }
