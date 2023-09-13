@@ -2,6 +2,8 @@
 
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
+import 'package:enhance/core/base/widget/common_top_bar.dart';
+import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:enhance/view/enhance/vm/enhance_vm.dart';
@@ -20,22 +22,28 @@ class _EnhanceState extends BaseState<Enhance> {
   @override
   Widget build(BuildContext context) {
     return BaseView<EnhanceViewModel>(
-        onPageBuilder: (BuildContext context, Store value) =>
-            buildChooseImageButton,
+        onPageBuilder: (BuildContext context, Store value) => _body,
         viewModel: EnhanceViewModel());
   }
 
+  Widget get _body => Stack(
+        children: <Widget>[
+          Positioned(
+              top: dynamicHeight(.05),
+              left: dynamicWidth(.3),
+              child: topBar(context: context, title: "Enhance")),
+          buildChooseImageButton
+        ],
+      );
+
   Widget get buildChooseImageButton => Center(
         child: Container(
-          width: dynamicWidth(.4),
-          height: dynamicHeight(.1),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
-          child: SvgPicture.asset(
-            AppIcons.APPICON_CIRCLE_PLUS,
-            fit: BoxFit.none,
-          ),
-        ),
+            width: dynamicWidth(.4),
+            height: dynamicHeight(.1),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
+            child:
+                const LottieCustomWidget(path: AppIcons.APPLOTTIE_PLUS_PURPLE)),
       );
 }

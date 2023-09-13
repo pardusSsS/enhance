@@ -14,7 +14,6 @@ abstract class BaseViewBase with Store {
   @action
   void changeNavBarIndex({required int index}) {
     navBarChoosedIndex = index;
-    print(navBarChoosedIndex);
     if (AppPages.appPageController.hasClients) {
       AppPages.appPageController.animateToPage(index,
           duration: const Duration(milliseconds: 200), curve: Curves.linear);
