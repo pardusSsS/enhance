@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:enhance/core/contants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,11 +16,16 @@ abstract class ResizeViewBase with Store {
 
   @action
   Future<void> onInit() async {
-    final byteData = await rootBundle.load(AppConst.imagePath!);
-    final bytes = byteData.buffer.asUint8List();
-    final decodedImage = await decodeImageFromList(bytes);
+    if (AppConst.imagePath != null) {
+      final File imageFile = File(AppConst.imagePath!);
+      final Uint8List bytes = await imageFile.readAsBytes();
 
-    width = decodedImage.width;
-    height = decodedImage.height;
+      // Use the bytes to decode the image
+      final decodedImage = await decodeImageFromList(bytes);
+
+      // Retrieve width and height
+      width = decodedImage.width;
+      height = decodedImage.height;
+    }
   }
 }

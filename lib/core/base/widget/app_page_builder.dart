@@ -1,9 +1,8 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unused_field, prefer_const_constructors_in_immutables
 
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/vm/base_vm.dart';
 import 'package:enhance/core/base/widget/navbar.dart';
-import 'package:enhance/core/contants/navbar_constants.dart';
 import 'package:enhance/core/contants/page_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +22,10 @@ class _AppPagesBuilderState extends BaseState<AppPagesBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [AppPagesBody(), NavBarWidget()],
+    return Scaffold(
+      body: Stack(
+        children: [AppPagesBody(), NavBarWidget()],
+      ),
     );
   }
 

@@ -53,28 +53,28 @@ class _ResizeState extends BaseState<Resize> {
                       vertical: dynamicHeight(.05),
                       horizontal: dynamicWidth(.05)),
                   child: nullImageBody(context: context)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _sizeBox(size: _viewModel.width ?? 0),
-              const LottieCustomWidget(
-                  path: AppIcons.APPLOTTIE_SIZE_CROSS, width: 45, height: 45),
-              _sizeBox(size: _viewModel.height ?? 0),
-            ],
-          ),
-          SizedBox(
-            height: dynamicHeight(.01),
-          ),
           Observer(builder: (context) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _interPolationButton(onTap: null, interpolation: "x2"),
-                _interPolationButton(onTap: null, interpolation: "x4"),
-                _interPolationButton(onTap: null, interpolation: "x8"),
+                _sizeBox(size: _viewModel.width ?? 0),
+                const LottieCustomWidget(
+                    path: AppIcons.APPLOTTIE_SIZE_CROSS, width: 45, height: 45),
+                _sizeBox(size: _viewModel.height ?? 0),
               ],
             );
           }),
+          SizedBox(
+            height: dynamicHeight(.01),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _interPolationButton(onTap: null, interpolation: "x2"),
+              _interPolationButton(onTap: null, interpolation: "x4"),
+              _interPolationButton(onTap: null, interpolation: "x8"),
+            ],
+          ),
         ],
       );
 
@@ -100,13 +100,11 @@ class _ResizeState extends BaseState<Resize> {
       onPressed: onTap,
       icon: Container(
           child: Center(
-            child: Flexible(
-              child: AutoSizeText.rich(
-                TextSpan(text: interpolation),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w600),
-              ),
+            child: AutoSizeText.rich(
+              TextSpan(text: interpolation),
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w600),
             ),
           ),
           width: 30,
