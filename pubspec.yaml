@@ -44,6 +44,8 @@ dependencies:
   collection: any
 
   lottie: ^2.6.0
+
+  image_picker: ^1.0.4
   
   auto_size_text: ^3.0.0
 

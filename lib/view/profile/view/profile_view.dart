@@ -30,7 +30,7 @@ class _ProfileState extends BaseState<Profile> {
 
   Widget get _body => Column(
         children: <Widget>[
-          topBar(context: context, title: "Profile"),
+          topBar(width: 60, height: 60, context: context, title: "Profile"),
           _profileImage,
           _listBody
         ],
@@ -118,6 +118,8 @@ class _ProfileState extends BaseState<Profile> {
                           width: dynamicWidth(.2),
                           child: const LottieCustomWidget(
                             path: AppIcons.APPLOTTIE_RATE_US,
+                            width: 45,
+                            height: 45,
                           ),
                         )
                       : const SizedBox(

@@ -1,36 +1,42 @@
+import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 Widget topBar(
     {required context,
-    String? svgPath,
+    String? path,
+    required double width,
+    required double height,
     Function()? onTap,
     required String title}) {
-  return Container(
-    margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * (.05),
-        right: MediaQuery.of(context).size.width * (.05),
-        top: MediaQuery.of(context).size.height * (.05)),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const SizedBox(
-          width: 25,
-        ),
-        Text(title,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-            )),
-        svgPath != null
-            ? IconButton(
-                onPressed: onTap,
-                icon: SvgPicture.asset(svgPath),
-              )
-            : const SizedBox(
-                width: 25,
-              ),
-      ],
-    ),
+  return SafeArea(
+    child: Container(
+        margin: EdgeInsetsDirectional.symmetric(
+            vertical: MediaQuery.of(context).size.height * .01),
+        height: MediaQuery.of(context).size.height * .05,
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              )),
+          actions: <Widget>[
+            path != null
+                ? IconButton(
+                    onPressed: onTap,
+                    icon: LottieCustomWidget(
+                      path: path,
+                      width: 45,
+                      height: 45,
+                    ),
+                  )
+                : const SizedBox(
+                    width: 25,
+                  ),
+          ],
+        )),
   );
 }

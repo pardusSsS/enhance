@@ -2,15 +2,20 @@
 
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
+import 'package:enhance/core/base/vm/base_vm.dart';
 import 'package:enhance/core/base/widget/colorful_filter_selector.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
+import 'package:enhance/core/base/widget/image_body_widget.dart';
+import 'package:enhance/core/contants/app_constants.dart';
+import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:enhance/core/contants/page_constants.dart';
+import 'package:enhance/view/enhance/vm/enhance_vm.dart';
 import 'package:enhance/view/filter/vm/filter_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobx/mobx.dart';
 
@@ -22,7 +27,6 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends BaseState<Filter> {
-  final _globalKey = GlobalKey();
   final FilterViewModel _viewModel = FilterViewModel();
   @override
   Widget build(BuildContext context) {
@@ -32,36 +36,28 @@ class _FilterState extends BaseState<Filter> {
         viewModel: FilterViewModel());
   }
 
-  Widget get _body => Column(
+  Widget get _body => Stack(
         children: <Widget>[
-          topBar(context: context, title: "Filters", svgPath: AppPages.TICK),
-          _imageBody,
+          topBar(
+              height: 60,
+              width: 60,
+              context: context,
+              title: "Filters",
+              path: AppIcons.APPLOTTIE_TICK),
+          AppConst.imagePath != null
+              ? Positioned(
+                  right: dynamicWidth(.05),
+                  left: dynamicWidth(.05),
+                  bottom: dynamicHeight(.3),
+                  child: _imageBody,
+                )
+              : Positioned(
+                  right: dynamicWidth(.05),
+                  left: dynamicWidth(.05),
+                  bottom: dynamicHeight(.4),
+                  child: nullImageBody(context: context)),
           _filterBar
         ],
-      );
-
-  Widget get _topBar => Container(
-        margin: EdgeInsets.only(
-            left: dynamicWidth(.05),
-            right: dynamicWidth(.05),
-            top: dynamicHeight(.01)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const SizedBox(
-              width: 25,
-            ),
-            const Text("Filters",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                )),
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(AppPages.TICK),
-            ),
-          ],
-        ),
       );
 
   Widget get _imageBody => Container(
@@ -87,34 +83,32 @@ class _FilterState extends BaseState<Filter> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: RepaintBoundary(
-        key: _globalKey,
-        child: CachedNetworkImage(
-          imageUrl: 'https://googleflutter.com/sample_image.jpg',
+        key: const Key("filterImage"),
+        child: Image.file(
+          File(AppConst.imagePath!),
           color: color.withOpacity(0.5),
           colorBlendMode: BlendMode.color,
           fit: BoxFit.contain,
-          placeholder: (context, url) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
     );
   }
 
-  Widget get _filterBar => Container(
-        key: const Key("ColorFilterBar"),
-        margin: EdgeInsetsDirectional.symmetric(horizontal: dynamicWidth(.05)),
-        width: dynamicWidth(1),
-        height: dynamicHeight(.1),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: AppColors.APPCOLOR_BLUE_3.withOpacity(.6)),
-        child: FilterSelector(
-          onFilterChanged: _viewModel.onFilterChanged,
-          filters: _viewModel.filters,
+  Widget get _filterBar => Positioned(
+        bottom: dynamicHeight(.2),
+        right: dynamicWidth(.05),
+        left: dynamicWidth(.05),
+        child: Container(
+          key: const Key("ColorFilterBar"),
+          width: dynamicWidth(1),
+          height: dynamicHeight(.1),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: AppColors.APPCOLOR_BLUE_3.withOpacity(.6)),
+          child: FilterSelector(
+            onFilterChanged: _viewModel.onFilterChanged,
+            filters: _viewModel.filters,
+          ),
         ),
       );
 }

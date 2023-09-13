@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, library_private_types_in_public_api
 
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/contants/color_constans.dart';
@@ -8,7 +8,7 @@ import 'package:mobx/mobx.dart';
 class BaseView<T extends Store> extends StatefulWidget {
   final Widget Function(BuildContext context, T value) onPageBuilder;
   final T viewModel;
-  final Function(T model)? onModelReady;
+  final Function()? onModelReady;
   final VoidCallback? onDispose;
 
   const BaseView(
@@ -27,7 +27,7 @@ class _BaseViewState extends BaseState<BaseView> {
   @override
   void initState() {
     super.initState();
-    if (widget.onModelReady != null) widget.onModelReady!(widget.viewModel);
+    if (widget.onModelReady != null) widget.onModelReady!();
   }
 
   @override

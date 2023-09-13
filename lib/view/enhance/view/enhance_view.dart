@@ -1,14 +1,19 @@
-// ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers
+// ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, prefer_final_fields
 
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
+import 'package:enhance/core/base/widget/image_body_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
+import 'package:enhance/core/contants/app_constants.dart';
 import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:enhance/view/enhance/vm/enhance_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
 class Enhance extends StatefulWidget {
@@ -19,6 +24,7 @@ class Enhance extends StatefulWidget {
 }
 
 class _EnhanceState extends BaseState<Enhance> {
+  EnhanceViewModel _viewModel = EnhanceViewModel();
   @override
   Widget build(BuildContext context) {
     return BaseView<EnhanceViewModel>(
@@ -26,24 +32,49 @@ class _EnhanceState extends BaseState<Enhance> {
         viewModel: EnhanceViewModel());
   }
 
-  Widget get _body => Stack(
-        children: <Widget>[
-          Positioned(
-              top: dynamicHeight(.05),
-              left: dynamicWidth(.3),
-              child: topBar(context: context, title: "Enhance")),
-          buildChooseImageButton
-        ],
-      );
+  Widget get _body => Observer(builder: (context) {
+        return Stack(
+          children: <Widget>[
+            topBar(
+                onTap: () {
+                  _viewModel.removeImage();
+                  if (_viewModel.editImage == null) {
+                    setState(() {});
+                  }
+                },
+                width: 60,
+                height: 60,
+                context: context,
+                title: "Enhance",
+                path: AppConst.imagePath != null
+                    ? AppIcons.APPLOTTIE_CROSS
+                    : null),
+            _viewModel.editImage != null || AppConst.imagePath != null
+                ? Center(
+                    child: imageBody(
+                        context: context,
+                        key: const Key("enhanceImage"),
+                        imagePath: AppConst.imagePath!),
+                  )
+                : buildChooseImageButton
+          ],
+        );
+      });
 
   Widget get buildChooseImageButton => Center(
-        child: Container(
-            width: dynamicWidth(.4),
-            height: dynamicHeight(.1),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
-            child:
-                const LottieCustomWidget(path: AppIcons.APPLOTTIE_PLUS_PURPLE)),
+        child: GestureDetector(
+          onTap: () => _viewModel.pickImage(),
+          child: Container(
+              width: dynamicWidth(.4),
+              height: dynamicHeight(.1),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
+              child: const LottieCustomWidget(
+                path: AppIcons.APPLOTTIE_PLUS_PURPLE,
+                width: 45,
+                height: 45,
+              )),
+        ),
       );
 }
