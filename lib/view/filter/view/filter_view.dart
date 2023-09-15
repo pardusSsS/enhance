@@ -4,19 +4,14 @@ import 'dart:io';
 
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
-import 'package:enhance/core/base/vm/base_vm.dart';
 import 'package:enhance/core/base/widget/colorful_filter_selector.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
-import 'package:enhance/core/base/widget/image_body_widget.dart';
+import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/contants/app_constants.dart';
 import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
-import 'package:enhance/core/contants/page_constants.dart';
-import 'package:enhance/view/enhance/vm/enhance_vm.dart';
 import 'package:enhance/view/filter/vm/filter_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobx/mobx.dart';
 
 class Filter extends StatefulWidget {
@@ -68,14 +63,11 @@ class _FilterState extends BaseState<Filter> {
             horizontal: dynamicWidth(.05), vertical: dynamicHeight(.05)),
         height: dynamicHeight(.5),
         width: dynamicWidth(1),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: ValueListenableBuilder(
-            valueListenable: _viewModel.filterColor,
-            builder: (BuildContext context, Color color, Widget? child) {
-              return _buildImage(color);
-            },
-          ),
+        child: ValueListenableBuilder(
+          valueListenable: _viewModel.filterColor,
+          builder: (BuildContext context, Color color, Widget? child) {
+            return _buildImage(color);
+          },
         ),
       );
 

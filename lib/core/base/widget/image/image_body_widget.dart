@@ -8,10 +8,8 @@ Widget imageBody(
     required Key key,
     required String imagePath}) {
   return Container(
-    width: MediaQuery.of(context).size.width,
-    height: MediaQuery.of(context).size.height * .5,
     margin: EdgeInsetsDirectional.symmetric(
-        horizontal: MediaQuery.of(context).size.width * (.05),
+        horizontal: MediaQuery.of(context).size.width * (.1),
         vertical: MediaQuery.of(context).size.height * (.05)),
     child: _buildImage(key: key, imagePath: imagePath),
   );

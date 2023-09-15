@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       onGenerateRoute: (settings) =>
-          NavigationRouteManager.onRouteGenerate(settings),
+          NavigationRouteManager.onRouteGenerate(settings, context),
       navigatorKey: NavigationService.instance.navigatorKey,
       title: 'Enhance',
     );
