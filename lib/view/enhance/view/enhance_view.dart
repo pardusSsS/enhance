@@ -14,6 +14,7 @@ import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:enhance/core/init/navigation/navigator_route_service.dart';
 import 'package:enhance/view/enhance/vm/enhance_vm.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -40,7 +41,7 @@ class _EnhanceState extends BaseState<Enhance> {
   }
 
   Widget get _body => Observer(builder: (context) {
-        return Stack(
+        return Column(
           children: <Widget>[
             topBar(
                 onTap: () {
@@ -84,87 +85,76 @@ class _EnhanceState extends BaseState<Enhance> {
         );
       });
 
-  Positioned _buildImage(BuildContext context) {
-    return Positioned(
-      top: dynamicHeight(.1),
-      left: dynamicWidth(.01),
-      right: dynamicWidth(.01),
-      child: SizedBox(
-        child: _viewModel.enhancedEditImage != null ||
-                AppConst.enhangedImage != null
-            ? enahancedImageBody(
-                context: context,
-                key: const Key("enhancedImage"),
-                image: Image.memory(
-                    _viewModel.enhancedEditImage ?? AppConst.enhangedImage!))
-            : imageBody(
-                context: context,
-                key: const Key("unEnhanceImage"),
-                imagePath: _viewModel.editImage ?? AppConst.imagePath!),
-      ),
+  Widget _buildImage(BuildContext context) {
+    return SizedBox(
+      child:
+          _viewModel.enhancedEditImage != null || AppConst.enhangedImage != null
+              ? enahancedImageBody(
+                  context: context,
+                  key: const Key("enhancedImage"),
+                  image: Image.memory(
+                      _viewModel.enhancedEditImage ?? AppConst.enhangedImage!))
+              : imageBody(
+                  context: context,
+                  key: const Key("unEnhanceImage"),
+                  imagePath: _viewModel.editImage ?? AppConst.imagePath!),
     );
   }
 
-  Positioned _buildInterpolationBox() {
-    return Positioned(
-      bottom: dynamicHeight(.22),
-      left: dynamicWidth(.05),
-      right: dynamicWidth(.05),
-      child: Observer(builder: (context) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _interPolationButton(
-                onTap: () => _viewModel.updateEnhanceNumber(2),
-                interpolation: "x2"),
-            _interPolationButton(
-                onTap: () => _viewModel.updateEnhanceNumber(4),
-                interpolation: "x4"),
-            _interPolationButton(
-                onTap: () => _viewModel.updateEnhanceNumber(8),
-                interpolation: "x8"),
-            _interPolationButton(
-                onTap: () => _viewModel.updateEnhanceNumber(10),
-                interpolation: "x10"),
-          ],
-        );
-      }),
-    );
-  }
-
-  Observer _buildSizedBox() {
+  Widget _buildInterpolationBox() {
     return Observer(builder: (context) {
-      return Positioned(
-        bottom: dynamicHeight(.3),
-        left: dynamicWidth(.05),
-        right: dynamicWidth(.05),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _sizeBox(size: _viewModel.width ?? 0),
-            const LottieCustomWidget(
-                path: AppIcons.APPLOTTIE_SIZE_CROSS, width: 45, height: 45),
-            _sizeBox(size: _viewModel.height ?? 0),
-          ],
-        ),
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _interPolationButton(
+              onTap: () => _viewModel.updateEnhanceNumber(2),
+              interpolation: "x2"),
+          _interPolationButton(
+              onTap: () => _viewModel.updateEnhanceNumber(4),
+              interpolation: "x4"),
+          _interPolationButton(
+              onTap: () => _viewModel.updateEnhanceNumber(8),
+              interpolation: "x8"),
+          _interPolationButton(
+              onTap: () => _viewModel.updateEnhanceNumber(10),
+              interpolation: "x10"),
+        ],
       );
     });
   }
 
-  Widget get buildChooseImageButton => Center(
-        child: GestureDetector(
-          onTap: () => _viewModel.pickImage(),
-          child: Container(
-              width: dynamicWidth(.4),
-              height: dynamicHeight(.1),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
-              child: const LottieCustomWidget(
-                path: AppIcons.APPLOTTIE_PLUS_PURPLE,
-                width: 45,
-                height: 45,
-              )),
+  Observer _buildSizedBox() {
+    return Observer(builder: (context) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _sizeBox(size: _viewModel.width ?? 0),
+          const LottieCustomWidget(
+              path: AppIcons.APPLOTTIE_SIZE_CROSS, width: 45, height: 45),
+          _sizeBox(size: _viewModel.height ?? 0),
+        ],
+      );
+    });
+  }
+
+  Widget get buildChooseImageButton => SizedBox(
+        width: dynamicWidth(1),
+        height: dynamicHeight(.8),
+        child: Center(
+          child: GestureDetector(
+            onTap: () => _viewModel.pickImage(),
+            child: Container(
+                width: dynamicWidth(.4),
+                height: dynamicHeight(.1),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.APPCOLOR_BLUE_2.withOpacity(.1)),
+                child: const LottieCustomWidget(
+                  path: AppIcons.APPLOTTIE_PLUS_PURPLE,
+                  width: 45,
+                  height: 45,
+                )),
+          ),
         ),
       );
 
@@ -216,31 +206,26 @@ class _EnhanceState extends BaseState<Enhance> {
     );
   }
 
-  Widget get _buildEnhanceStartButton => Positioned(
-        bottom: dynamicHeight(.15),
-        right: dynamicWidth(.4),
-        left: dynamicWidth(.4),
-        child: GestureDetector(
-          onTap: () async {
-            dialogBuilder(context);
-            var result = await _viewModel.enhanceImageService();
-            if (result) {
-              NavigationRouteManager.onRouteGenerate(
-                  RouteSettings(name: '/back'), context);
-            }
-          },
-          child: Container(
-            height: dynamicHeight(.03),
-            decoration: BoxDecoration(
-                color: randomColorful(),
-                borderRadius: BorderRadius.circular(12)),
-            child: const Center(
-                child: Text(
-              "Start",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-            )),
-          ),
+  Widget get _buildEnhanceStartButton => GestureDetector(
+        onTap: () async {
+          dialogBuilder(context);
+          var result = await _viewModel.enhanceImageService();
+          if (result) {
+            NavigationRouteManager.onRouteGenerate(
+                RouteSettings(name: '/back'), context);
+          }
+        },
+        child: Container(
+          height: dynamicHeight(.05),
+          width: dynamicWidth(.2),
+          margin: EdgeInsets.only(top: dynamicHeight(.05)),
+          decoration: BoxDecoration(
+              color: randomColorful(), borderRadius: BorderRadius.circular(12)),
+          child: const Center(
+              child: Text(
+            "Start",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+          )),
         ),
       );
 }

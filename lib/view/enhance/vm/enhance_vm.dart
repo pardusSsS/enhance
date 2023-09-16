@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -8,9 +10,11 @@ import 'package:enhance/core/contants/app_constants.dart';
 import 'package:enhance/core/init/env/env.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:mobx/mobx.dart';
+import 'package:path_provider/path_provider.dart';
 part 'enhance_vm.g.dart';
 
 class EnhanceViewModel = EnhanceViewBase with _$EnhanceViewModel;
@@ -44,6 +48,7 @@ abstract class EnhanceViewBase with Store {
   Future<void> enhancedImage(Uint8List imageData) async {
     enhancedEditImage = imageData;
     AppConst.enhangedImage = enhancedEditImage;
+
     await calculateImageSize();
   }
 
@@ -86,7 +91,7 @@ abstract class EnhanceViewBase with Store {
   //---------------------------------------------------------------
   //-------------------------enhance image service----------------------------
 
-  Future<bool> enhanceImageService() async {
+  Future<dynamic> enhanceImageService() async {
     try {
       var uri = Uri.parse(Env.enhanceUrl);
       var request = http.MultipartRequest('POST', uri)

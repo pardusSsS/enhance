@@ -8,8 +8,14 @@ Widget imageBody(
     required Key key,
     required String imagePath}) {
   return Container(
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.APPCOLOR_BLUE_3),
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height * .4,
     margin: EdgeInsetsDirectional.symmetric(
-        horizontal: MediaQuery.of(context).size.width * (.1),
+        horizontal: MediaQuery.of(context).size.width * (.05),
         vertical: MediaQuery.of(context).size.height * (.05)),
     child: _buildImage(key: key, imagePath: imagePath),
   );

@@ -3,9 +3,9 @@ import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:flutter/material.dart';
 
-Future<void> dialogBuilder(BuildContext context) {
+dialogBuilder(BuildContext context) {
   return showDialog<void>(
-    barrierDismissible: true,
+    barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
