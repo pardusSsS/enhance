@@ -6,10 +6,11 @@ import 'package:enhance/core/base/widget/bottomsheet/image_format_bottomsheet.da
 import 'package:enhance/core/base/widget/common_top_bar.dart';
 import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
-import 'package:enhance/core/base/widget/wait_dialog/wait_fialog.dart';
-import 'package:enhance/core/contants/app_constants.dart';
-import 'package:enhance/core/contants/app_icons_constants.dart';
-import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
+import 'package:enhance/core/constants/app_constants.dart';
+import 'package:enhance/core/constants/app_icons_constants.dart';
+import 'package:enhance/core/constants/color_constans.dart';
+import 'package:enhance/view/resize/service/convert_and_save_to_gallery.dart';
 import 'package:enhance/view/resize/vm/converter_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -29,35 +30,51 @@ class _ResizeState extends BaseState<Resize> {
     return Observer(builder: (context) {
       return BaseView<ConverterViewModel>(
         onPageBuilder: (BuildContext context, Store value) =>
-            SafeArea(child: _body),
+            SafeArea(child: _body()),
         viewModel: ConverterViewModel(),
-        onModelReady: () => _viewModel.onInit(),
+        onModelReady: () {
+          _viewModel.onInit();
+        },
       );
     });
   }
 
-  Widget get _body => Column(
+  Widget _body() {
+    return Observer(builder: (context) {
+      return Column(
         children: <Widget>[
-          Observer(builder: (context) {
-            return topBar(
-                height: 60,
-                width: 60,
-                context: context,
-                title: "Resize",
-                path: _viewModel.convertedFilePath != null
-                    ? AppIcons.APPLOTTIE_DOWNLOAD
-                    : null,
-                onTap: _viewModel.convertedFilePath != null
-                    ? () {
-                        dialogBuilder(context, _viewModel.saveConvertedImage());
-                      }
-                    : null);
-          }),
+          topBar(
+              height: 60,
+              width: 60,
+              context: context,
+              title: "Resize",
+              lastIconPath: _viewModel.converterStatus != false ||
+                      AppConst.converterStatus != false
+                  ? AppIcons.APPLOTTIE_DOWNLOAD
+                  : null,
+              onTap: _viewModel.converterStatus != false ||
+                      AppConst.converterStatus != false
+                  ? () {
+                      dialogBuilder(
+                          context,
+                          saveConvertedImage(
+                              path: AppConst.convertedImagePath!),
+                          null);
+                    }
+                  : null),
           AppConst.imagePath != null
-              ? imageBody(
-                  context: context,
-                  key: const Key("resizeImage"),
-                  imagePath: AppConst.imagePath!)
+              ? GestureDetector(
+                  onTap: () {
+                    _viewModel.updateConvertedFilePath(
+                        status: true, filePath: AppConst.convertedImagePath);
+                    print(_viewModel.convertedFilePath);
+                    print(AppConst.convertedImagePath);
+                  },
+                  child: imageBody(
+                      context: context,
+                      key: const Key("resizeImage"),
+                      imagePath: AppConst.imagePath!),
+                )
               : Container(
                   margin: EdgeInsetsDirectional.symmetric(
                       vertical: dynamicHeight(.05),
@@ -67,6 +84,8 @@ class _ResizeState extends BaseState<Resize> {
           _buildEnhanceStartButton
         ],
       );
+    });
+  }
 
   Observer _buildSizedBox() {
     return Observer(builder: (context) {
@@ -127,12 +146,16 @@ class _ResizeState extends BaseState<Resize> {
   }
 
   Widget get _buildEnhanceStartButton => GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (AppConst.imagePath != null || AppConst.enhangedImage != null) {
-            dialogBuilder(
-              context,
-              _viewModel.changeFileKind(),
-            );
+            await dialogBuilder(
+                context,
+                changeFileKind(
+                    fileKind: _viewModel.toFileKind,
+                    enhpath: AppConst.enhangedImage,
+                    unenhpath: AppConst.imagePath),
+                null);
+            _viewModel.updateConverterStatus(status: true);
           }
         },
         child: Container(

@@ -6,4 +6,6 @@ class AppConst {
   static Uint8List? enhangedImage;
   static String? textToImagePath;
   static Uint8List? textToImage;
+  static String? convertedImagePath;
+  static bool converterStatus = false;
 }

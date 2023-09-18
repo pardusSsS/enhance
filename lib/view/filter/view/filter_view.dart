@@ -7,9 +7,9 @@ import 'package:enhance/core/base/view/base_widget.dart';
 import 'package:enhance/core/base/widget/colorful_filter_selector.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
 import 'package:enhance/core/base/widget/image/image_body_widget.dart';
-import 'package:enhance/core/contants/app_constants.dart';
-import 'package:enhance/core/contants/app_icons_constants.dart';
-import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/constants/app_constants.dart';
+import 'package:enhance/core/constants/app_icons_constants.dart';
+import 'package:enhance/core/constants/color_constans.dart';
 import 'package:enhance/view/filter/vm/filter_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -38,7 +38,7 @@ class _FilterState extends BaseState<Filter> {
               width: 60,
               context: context,
               title: "Filters",
-              path: AppIcons.APPLOTTIE_TICK),
+              lastIconPath: AppIcons.APPLOTTIE_TICK),
           AppConst.imagePath != null
               ? Positioned(
                   right: dynamicWidth(.05),

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/constants/color_constans.dart';
 import 'package:flutter/material.dart';
 
 List<Color> get _color => [

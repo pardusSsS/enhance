@@ -3,7 +3,7 @@
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
-import 'package:enhance/core/contants/app_icons_constants.dart';
+import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/view/splash/vm/splash_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';

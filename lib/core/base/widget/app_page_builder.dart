@@ -3,7 +3,7 @@
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/vm/base_vm.dart';
 import 'package:enhance/core/base/widget/navbar.dart';
-import 'package:enhance/core/contants/page_constants.dart';
+import 'package:enhance/core/constants/page_constants.dart';
 import 'package:flutter/material.dart';
 
 class AppPagesBuilder extends StatefulWidget {

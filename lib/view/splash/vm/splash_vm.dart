@@ -1,4 +1,4 @@
-import 'package:enhance/core/contants/route_constants.dart';
+import 'package:enhance/core/constants/route_constants.dart';
 import 'package:enhance/core/init/navigation/navigator_service.dart';
 import 'package:mobx/mobx.dart';
 part 'splash_vm.g.dart';

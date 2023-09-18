@@ -73,6 +73,22 @@ mixin _$ConverterViewModel on ConverterViewBase, Store {
     });
   }
 
+  late final _$converterStatusAtom =
+      Atom(name: 'ConverterViewBase.converterStatus', context: context);
+
+  @override
+  bool get converterStatus {
+    _$converterStatusAtom.reportRead();
+    return super.converterStatus;
+  }
+
+  @override
+  set converterStatus(bool value) {
+    _$converterStatusAtom.reportWrite(value, super.converterStatus, () {
+      super.converterStatus = value;
+    });
+  }
+
   late final _$ConverterViewBaseActionController =
       ActionController(name: 'ConverterViewBase', context: context);
 
@@ -82,6 +98,17 @@ mixin _$ConverterViewModel on ConverterViewBase, Store {
         name: 'ConverterViewBase.updateFileKind');
     try {
       return super.updateFileKind(kind: kind);
+    } finally {
+      _$ConverterViewBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateConverterStatus({required bool status}) {
+    final _$actionInfo = _$ConverterViewBaseActionController.startAction(
+        name: 'ConverterViewBase.updateConverterStatus');
+    try {
+      return super.updateConverterStatus(status: status);
     } finally {
       _$ConverterViewBaseActionController.endAction(_$actionInfo);
     }
@@ -127,7 +154,8 @@ mixin _$ConverterViewModel on ConverterViewBase, Store {
 toFileKind: ${toFileKind},
 fileKind: ${fileKind},
 selectedIndex: ${selectedIndex},
-convertedFilePath: ${convertedFilePath}
+convertedFilePath: ${convertedFilePath},
+converterStatus: ${converterStatus}
     ''';
   }
 }

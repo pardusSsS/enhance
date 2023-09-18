@@ -1,5 +1,5 @@
-import 'package:enhance/core/contants/navbar_constants.dart';
-import 'package:enhance/core/contants/page_constants.dart';
+import 'package:enhance/core/constants/navbar_constants.dart';
+import 'package:enhance/core/constants/page_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 

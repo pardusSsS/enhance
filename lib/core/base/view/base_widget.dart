@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, library_private_types_in_public_api
 
 import 'package:enhance/core/base/state/base_state.dart';
-import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/constants/color_constans.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 

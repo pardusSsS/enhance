@@ -1,5 +1,5 @@
 import 'package:enhance/core/base/widget/app_page_builder.dart';
-import 'package:enhance/core/contants/route_constants.dart';
+import 'package:enhance/core/constants/route_constants.dart';
 import 'package:enhance/core/init/navigation/not_found.dart';
 import 'package:enhance/core/init/navigation/transitions/fade_route.dart';
 import 'package:enhance/view/splash/view/splash_view.dart';

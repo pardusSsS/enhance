@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-import 'package:enhance/core/contants/app_constants.dart';
+import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/init/env/env.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ abstract class EnhanceViewBase with Store {
   }
 
   @action
-  Future<void> enhancedImage(Uint8List imageData) async {
+  Future<void> updateEnhancedImage(Uint8List imageData) async {
     enhancedEditImage = imageData;
     AppConst.enhangedImage = enhancedEditImage;
 
@@ -57,6 +57,9 @@ abstract class EnhanceViewBase with Store {
     editImage = null;
     AppConst.imagePath = null;
     AppConst.enhangedImage = null;
+    AppConst.convertedImagePath = null;
+    AppConst.converterStatus = false;
+    enhancedEditImage = null;
   }
 
   @action
@@ -109,7 +112,7 @@ abstract class EnhanceViewBase with Store {
       if (response.statusCode == 200) {
         // Read and process the response here
         var responseString = response.bodyBytes;
-        enhancedImage(responseString);
+        updateEnhancedImage(responseString);
         return true;
       } else {
         return false;

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 Widget topBar(
     {required context,
-    String? path,
+    String? leadingIconPath,
+    String? lastIconPath,
     required double width,
     required double height,
     Function()? onTap,
+    Function()? leadingOnTap,
     required String title}) {
   return SafeArea(
     child: Container(
@@ -23,12 +25,22 @@ Widget topBar(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
               )),
+          leading: leadingIconPath != null
+              ? IconButton(
+                  onPressed: leadingOnTap,
+                  icon: LottieCustomWidget(
+                    path: leadingIconPath,
+                    width: 45,
+                    height: 45,
+                  ),
+                )
+              : null,
           actions: <Widget>[
-            path != null
+            lastIconPath != null
                 ? IconButton(
                     onPressed: onTap,
                     icon: LottieCustomWidget(
-                      path: path,
+                      path: lastIconPath,
                       width: 45,
                       height: 45,
                     ),

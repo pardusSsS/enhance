@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:enhance/core/base/vm/base_vm.dart';
-import 'package:enhance/core/contants/navbar_constants.dart';
+import 'package:enhance/core/constants/navbar_constants.dart';
 import 'package:enhance/view/cloud/view/cloud_view.dart';
 import 'package:enhance/view/enhance/view/enhance_view.dart';
 import 'package:enhance/view/filter/view/filter_view.dart';

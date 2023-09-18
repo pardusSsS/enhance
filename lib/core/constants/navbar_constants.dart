@@ -25,7 +25,9 @@ class NavBarItems {
     buildNavBarItemMap(
         key: const Key("enhance"), icon: NAVBAR_ENHANCE_SVG, text: 'Enhance'),
     buildNavBarItemMap(
-        key: const Key("cloud"), icon: NAVBAR_CLOUD_SVG, text: 'Cloud'),
+        key: const Key("textToImage"),
+        icon: NAVBAR_CLOUD_SVG,
+        text: 'Text to \nimage'),
     buildNavBarItemMap(
         key: const Key("profile"), icon: NAVBAR_PROFILE_SVG, text: 'Profile'),
   ];

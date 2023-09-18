@@ -1,12 +1,19 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, depend_on_referenced_packages
 
-import 'package:enhance/core/contants/app_constants.dart';
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:enhance/core/base/widget/snackbars/app_snackbars.dart';
+import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/view/cloud/model/cloud_model.dart';
 import 'package:enhance/view/cloud/service/text_to_image_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 part 'cloud_vm.g.dart';
 
@@ -21,24 +28,16 @@ abstract class CloudViewBase with Store {
   void updateCachedImage({required String path}) {
     textToImagePath = path;
     AppConst.textToImagePath = path;
-    print("textto image: ${AppConst.textToImagePath}");
   }
 
   //---------------------------------------------------------------
   //-------------------------enhance image service----------------------------
   Future<void> initCloudModel({required String text}) async {
-    print(1);
     final response = await _textToImageService.initCloudList(text: text);
-    print(2);
-    print(response.runtimeType);
-    var result = response is CloudModel;
-    print(result);
     if (response is CloudModel) {
-      print("status: ${response.status}");
       dynamic res = false;
-      while (res != false) {
+      while (res == false) {
         res = await _fetchImageBytes(response.url);
-        print("res: $res");
       }
       updateCachedImage(path: response.url);
     }
@@ -50,29 +49,21 @@ abstract class CloudViewBase with Store {
     final response = await http.get(Uri.parse(imageUrl));
     if (response.statusCode == 200) {
       var bytes = response.bodyBytes;
-      try {
-        final imageBytes = response.bodyBytes;
-        return Image.memory(imageBytes);
-      } catch (_) {
-        // If decoding as an image fails, return the JSON response
-        return false;
+      var result = await isImageValid(bytes);
+      if (result) {
+        AppConst.textToImage = bytes;
       }
-    } else {
-      throw Exception('Failed to load image');
+      return result;
     }
   }
-}
 
-bool _isValidPng(Uint8List bytes) {
-  // Check the PNG header (first 8 bytes)
-  const List<int> pngSignature = [137, 80, 78, 71, 13, 10, 26, 10];
-  if (bytes.length >= pngSignature.length) {
-    for (int i = 0; i < pngSignature.length; i++) {
-      if (bytes[i] != pngSignature[i]) {
-        return false;
-      }
+  Future<bool> isImageValid(Uint8List bytes) async {
+    try {
+      final codec = await instantiateImageCodec(bytes, targetWidth: 32);
+      final frameInfo = await codec.getNextFrame();
+      return frameInfo.image.width > 0;
+    } catch (e) {
+      return false;
     }
-    return true;
   }
-  return false;
 }

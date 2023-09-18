@@ -3,8 +3,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:enhance/core/base/vm/base_vm.dart';
-import 'package:enhance/core/contants/navbar_constants.dart';
-import 'package:enhance/core/contants/color_constans.dart';
+import 'package:enhance/core/constants/navbar_constants.dart';
+import 'package:enhance/core/constants/color_constans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +26,7 @@ class NavBarWidget extends StatelessWidget {
         margin: EdgeInsetsDirectional.symmetric(
             vertical: MediaQuery.of(context).size.width * (.05)),
         width: MediaQuery.of(context).size.width * 1,
-        height: MediaQuery.of(context).size.height * .09,
+        height: MediaQuery.of(context).size.height * .1,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: AppColors.APPCOLOR_NAVBAR),
@@ -63,7 +63,13 @@ class NavBarWidget extends StatelessWidget {
             icon: SvgPicture.asset(item['icon']!),
           ),
         ),
-        Expanded(child: AutoSizeText(item["text"]!))
+        Expanded(
+            child: Center(
+          child: AutoSizeText(
+            item["text"]!,
+            textAlign: TextAlign.center,
+          ),
+        ))
       ],
     );
   }

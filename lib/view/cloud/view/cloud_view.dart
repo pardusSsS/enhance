@@ -8,11 +8,12 @@ import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/base/widget/image/text_to_image_body.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/base/widget/random_colorful.dart';
-import 'package:enhance/core/base/widget/wait_dialog/wait_fialog.dart';
-import 'package:enhance/core/contants/app_constants.dart';
-import 'package:enhance/core/contants/app_icons_constants.dart';
-import 'package:enhance/core/contants/color_constans.dart';
-import 'package:enhance/core/contants/page_constants.dart';
+import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
+import 'package:enhance/core/constants/app_constants.dart';
+import 'package:enhance/core/constants/app_icons_constants.dart';
+import 'package:enhance/core/constants/color_constans.dart';
+import 'package:enhance/core/constants/page_constants.dart';
+import 'package:enhance/core/init/save_image/save_image_to_gallery.dart';
 import 'package:enhance/view/cloud/vm/cloud_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -87,7 +88,24 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
         },
         child: Column(
           children: <Widget>[
-            topBar(context: context, title: "Cloud", width: 60, height: 60),
+            Observer(builder: (context) {
+              return topBar(
+                  context: context,
+                  title: "Text To Image",
+                  width: 60,
+                  height: 60,
+                  lastIconPath: _viewModel.textToImagePath != null ||
+                          AppConst.textToImagePath != null
+                      ? AppIcons.APPLOTTIE_DOWNLOAD
+                      : null,
+                  onTap: _viewModel.textToImagePath != null ||
+                          AppConst.textToImagePath != null
+                      ? () {
+                          dialogBuilder(context,
+                              saveImageToGallery(AppConst.textToImage!), null);
+                        }
+                      : null);
+            }),
             _folderBody
           ],
         ),
@@ -166,8 +184,10 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
           onPressed: () async {
             if (_textController.text.isNotEmpty) {
               await DefaultCacheManager().emptyCache().then((value) =>
-                  dialogBuilder(context,
-                      _viewModel.initCloudModel(text: _textController.text)));
+                  dialogBuilder(
+                      context,
+                      _viewModel.initCloudModel(text: _textController.text),
+                      null));
             }
           },
         ),

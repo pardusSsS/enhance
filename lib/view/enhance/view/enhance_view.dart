@@ -8,11 +8,11 @@ import 'package:enhance/core/base/widget/image/enhance_image_body_widget.dart';
 import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/base/widget/random_colorful.dart';
-import 'package:enhance/core/base/widget/wait_dialog/wait_fialog.dart';
-import 'package:enhance/core/contants/app_constants.dart';
-import 'package:enhance/core/contants/app_icons_constants.dart';
-import 'package:enhance/core/contants/color_constans.dart';
-import 'package:enhance/core/init/navigation/navigator_route_service.dart';
+import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
+import 'package:enhance/core/constants/app_constants.dart';
+import 'package:enhance/core/constants/app_icons_constants.dart';
+import 'package:enhance/core/constants/color_constans.dart';
+import 'package:enhance/core/init/save_image/save_image_to_gallery.dart';
 import 'package:enhance/view/enhance/vm/enhance_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -43,17 +43,26 @@ class _EnhanceState extends BaseState<Enhance> {
         return Column(
           children: <Widget>[
             topBar(
-                onTap: () {
+                leadingOnTap: () {
                   _viewModel.removeImage();
-                  if (_viewModel.editImage == null) {
-                    setState(() {});
+                  setState(() {});
+
+                  if (_viewModel.editImage == null) {}
+                },
+                onTap: () {
+                  if (AppConst.enhangedImage != null) {
+                    dialogBuilder(context,
+                        saveImageToGallery(AppConst.enhangedImage!), null);
                   }
                 },
                 width: 60,
                 height: 60,
                 context: context,
                 title: "Enhance",
-                path: AppConst.imagePath != null
+                lastIconPath: AppConst.enhangedImage != null
+                    ? AppIcons.APPLOTTIE_DOWNLOAD
+                    : null,
+                leadingIconPath: AppConst.imagePath != null
                     ? AppIcons.APPLOTTIE_CROSS
                     : null),
             //start image body
@@ -207,10 +216,7 @@ class _EnhanceState extends BaseState<Enhance> {
 
   Widget get _buildEnhanceStartButton => GestureDetector(
         onTap: () {
-          dialogBuilder(
-            context,
-            _viewModel.enhanceImageService(),
-          );
+          dialogBuilder(context, _viewModel.enhanceImageService(), null);
         },
         child: Container(
           height: dynamicHeight(.05),

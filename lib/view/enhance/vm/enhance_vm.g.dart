@@ -97,12 +97,13 @@ mixin _$EnhanceViewModel on EnhanceViewBase, Store {
     return _$pickImageAsyncAction.run(() => super.pickImage());
   }
 
-  late final _$enhancedImageAsyncAction =
-      AsyncAction('EnhanceViewBase.enhancedImage', context: context);
+  late final _$updateEnhancedImageAsyncAction =
+      AsyncAction('EnhanceViewBase.updateEnhancedImage', context: context);
 
   @override
-  Future<void> enhancedImage(Uint8List imageData) {
-    return _$enhancedImageAsyncAction.run(() => super.enhancedImage(imageData));
+  Future<void> updateEnhancedImage(Uint8List imageData) {
+    return _$updateEnhancedImageAsyncAction
+        .run(() => super.updateEnhancedImage(imageData));
   }
 
   late final _$onInitAsyncAction =
