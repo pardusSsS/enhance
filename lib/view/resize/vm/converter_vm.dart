@@ -8,18 +8,19 @@ import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 
-part 'resize_vm.g.dart';
+part 'converter_vm.g.dart';
 
-class ResizeViewModel = ResizeViewBase with _$ResizeViewModel;
+class ConverterViewModel = ConverterViewBase with _$ConverterViewModel;
 
-abstract class ResizeViewBase with Store {
+abstract class ConverterViewBase with Store {
   @observable
-  String toFileKind = 'JPG';
+  String toFileKind = 'JPEG';
   @observable
-  String fileKind = 'JPG';
+  String fileKind = 'JPEG';
   @observable
   int selectedIndex = 0;
-
+  @observable
+  String? convertedFilePath;
   @action
   void updateFileKind({required String kind}) {
     toFileKind = kind;
@@ -36,6 +37,16 @@ abstract class ResizeViewBase with Store {
     if (AppConst.imagePath != null || AppConst.enhangedImage != null) {
       fileKind = getImageType(AppConst.enhangedImage ??
           File(AppConst.imagePath!).readAsBytesSync());
+    }
+  }
+
+  @action
+  void updateConvertedFilePath({String? filePath, required bool status}) {
+    if (status) {
+      convertedFilePath = filePath;
+      print("cvpath: $convertedFilePath");
+    } else {
+      convertedFilePath = null;
     }
   }
 
@@ -130,24 +141,34 @@ abstract class ResizeViewBase with Store {
         // Write the JPG image to the file
         File(filePath).writeAsBytesSync(newImage!);
 
-        // Save the JPG image to the gallery
-        final result = await ImageGallerySaver.saveFile(filePath);
-
-        File(filePath).delete();
-        if (result['isSuccess']) {
-          print('Image saved to gallery successfully.');
-          completer.complete(true);
-        } else {
-          completer.complete(false);
-        }
+        updateConvertedFilePath(filePath: filePath, status: true);
+        completer.complete(true);
       } catch (e) {
         completer.completeError(false);
-        print(e);
       }
     } else {
       completer.complete(false);
     }
 
+    return completer.future;
+  }
+
+  Future<bool> saveConvertedImage() async {
+    Completer<bool> completer = Completer<bool>();
+    try {
+      // Save the JPG image to the gallery
+      final result = await ImageGallerySaver.saveFile(convertedFilePath!);
+
+      if (result['isSuccess']) {
+        print('Image saved to gallery successfully.');
+        File(convertedFilePath!).delete();
+        completer.complete(true);
+      } else {
+        completer.complete(false);
+      }
+    } catch (e) {
+      completer.completeError(true);
+    }
     return completer.future;
   }
 }

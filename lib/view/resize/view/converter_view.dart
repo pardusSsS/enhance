@@ -1,19 +1,16 @@
 // ignore_for_file: library_private_types_in_public_api, prefer_final_fields, sort_child_properties_last, prefer_const_constructors, use_build_context_synchronously
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
-import 'package:enhance/core/base/widget/bottomshhet/image_format_bottomsheet.dart';
+import 'package:enhance/core/base/widget/bottomsheet/image_format_bottomsheet.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
 import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
-import 'package:enhance/core/base/widget/random_colorful.dart';
 import 'package:enhance/core/base/widget/wait_dialog/wait_fialog.dart';
 import 'package:enhance/core/contants/app_constants.dart';
 import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
-import 'package:enhance/core/init/navigation/navigator_route_service.dart';
-import 'package:enhance/view/resize/vm/resize_vm.dart';
+import 'package:enhance/view/resize/vm/converter_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -26,20 +23,36 @@ class Resize extends StatefulWidget {
 }
 
 class _ResizeState extends BaseState<Resize> {
-  ResizeViewModel _viewModel = ResizeViewModel();
+  ConverterViewModel _viewModel = ConverterViewModel();
   @override
   Widget build(BuildContext context) {
-    return BaseView<ResizeViewModel>(
-      onPageBuilder: (BuildContext context, Store value) =>
-          SafeArea(child: _body),
-      viewModel: ResizeViewModel(),
-      onModelReady: () => _viewModel.onInit(),
-    );
+    return Observer(builder: (context) {
+      return BaseView<ConverterViewModel>(
+        onPageBuilder: (BuildContext context, Store value) =>
+            SafeArea(child: _body),
+        viewModel: ConverterViewModel(),
+        onModelReady: () => _viewModel.onInit(),
+      );
+    });
   }
 
   Widget get _body => Column(
         children: <Widget>[
-          topBar(height: 60, width: 60, context: context, title: "Resize"),
+          Observer(builder: (context) {
+            return topBar(
+                height: 60,
+                width: 60,
+                context: context,
+                title: "Resize",
+                path: _viewModel.convertedFilePath != null
+                    ? AppIcons.APPLOTTIE_DOWNLOAD
+                    : null,
+                onTap: _viewModel.convertedFilePath != null
+                    ? () {
+                        dialogBuilder(context, _viewModel.saveConvertedImage());
+                      }
+                    : null);
+          }),
           AppConst.imagePath != null
               ? imageBody(
                   context: context,
@@ -114,16 +127,12 @@ class _ResizeState extends BaseState<Resize> {
   }
 
   Widget get _buildEnhanceStartButton => GestureDetector(
-        onTap: () async {
+        onTap: () {
           if (AppConst.imagePath != null || AppConst.enhangedImage != null) {
-            dialogBuilder(context);
-            bool result = await _viewModel.changeFileKind();
-
-            Future.delayed(Duration(milliseconds: 1000));
-            if (result) {
-              NavigationRouteManager.onRouteGenerate(
-                  RouteSettings(name: '/back'), context);
-            }
+            dialogBuilder(
+              context,
+              _viewModel.changeFileKind(),
+            );
           }
         },
         child: Container(

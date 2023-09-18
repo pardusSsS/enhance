@@ -1,4 +1,4 @@
-import 'package:enhance/view/resize/vm/resize_vm.dart';
+import 'package:enhance/view/resize/vm/converter_vm.dart';
 import 'package:flutter/cupertino.dart';
 
 const double _kItemExtent = 32.0;
@@ -13,7 +13,7 @@ const List<String> _fileNames = <String>[
 ];
 
 void ImageFormatBottomSheet(
-    {required BuildContext context, required ResizeViewModel viewModel}) {
+    {required BuildContext context, required ConverterViewModel viewModel}) {
   showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) => Container(

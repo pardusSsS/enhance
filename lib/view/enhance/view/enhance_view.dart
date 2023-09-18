@@ -14,7 +14,6 @@ import 'package:enhance/core/contants/app_icons_constants.dart';
 import 'package:enhance/core/contants/color_constans.dart';
 import 'package:enhance/core/init/navigation/navigator_route_service.dart';
 import 'package:enhance/view/enhance/vm/enhance_vm.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -207,13 +206,11 @@ class _EnhanceState extends BaseState<Enhance> {
   }
 
   Widget get _buildEnhanceStartButton => GestureDetector(
-        onTap: () async {
-          dialogBuilder(context);
-          var result = await _viewModel.enhanceImageService();
-          if (result) {
-            NavigationRouteManager.onRouteGenerate(
-                RouteSettings(name: '/back'), context);
-          }
+        onTap: () {
+          dialogBuilder(
+            context,
+            _viewModel.enhanceImageService(),
+          );
         },
         child: Container(
           height: dynamicHeight(.05),

@@ -23,6 +23,7 @@ class _AppPagesBuilderState extends BaseState<AppPagesBuilder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [AppPagesBody(), NavBarWidget()],
       ),
