@@ -21,4 +21,11 @@ abstract class Env {
   @EnviedField(varName: 'TEXT_TO_IMAGE_URL', obfuscate: true)
   static final textToImageUrl = _Env.textToImageUrl.toString();
   //text-to-image end
+
+  //firestore start
+  @EnviedField(varName: 'START_PACKET_LIMIT', obfuscate: true)
+  static final startPacket = _Env.startPacket.toString();
+  @EnviedField(varName: 'USER_USAGE_LIMIT', obfuscate: true)
+  static final userUsage = _Env.userUsage.toString();
+  //firestore end
 }

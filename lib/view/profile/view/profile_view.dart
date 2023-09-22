@@ -3,13 +3,17 @@
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
+import 'package:enhance/core/base/widget/indicator.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
+import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
+import 'package:enhance/core/constants/navbar_constants.dart';
+import 'package:enhance/core/constants/user_constants.dart';
 import 'package:enhance/view/profile/vm/profile_vm.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mobx/mobx.dart';
 
 class Profile extends StatefulWidget {
@@ -20,6 +24,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends BaseState<Profile> {
+  int touchedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BaseView<ProfileViewModel>(
@@ -31,10 +36,101 @@ class _ProfileState extends BaseState<Profile> {
   Widget get _body => Column(
         children: <Widget>[
           topBar(width: 60, height: 60, context: context, title: "Profile"),
-          _profileImage,
-          _listBody
+          //_profileImage,
+
+          _buildChartArea(),
+          _listBody,
         ],
       );
+
+  Widget _buildChartArea() {
+    return Container(
+      margin: EdgeInsetsDirectional.symmetric(vertical: dynamicHeight(.05)),
+      child: Row(
+        children: [
+          _buildChart(),
+          _buildChartIndicator(),
+          const SizedBox(
+            width: 28,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildChart() {
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1.3,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: PieChart(PieChartData(
+            pieTouchData: PieTouchData(
+              touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                setState(() {
+                  if (!event.isInterestedForInteractions ||
+                      pieTouchResponse == null ||
+                      pieTouchResponse.touchedSection == null) {
+                    touchedIndex = -1;
+                    return;
+                  }
+                  touchedIndex =
+                      pieTouchResponse.touchedSection!.touchedSectionIndex;
+                });
+              },
+            ),
+            borderData: FlBorderData(
+              show: false,
+            ),
+            sectionsSpace: 0,
+            centerSpaceRadius: 0,
+            sections: showingSections(),
+          )),
+        ),
+      ),
+    );
+  }
+
+  Column _buildChartIndicator() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Indicator(
+          color: AppColors.APPCOLOR_COLORFUL_1,
+          text: "Enhance (${AppUserConst.enhanceLimit.toString()})",
+          isSquare: true,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Indicator(
+          color: AppColors.APPCOLOR_COLORFUL_2,
+          text: "Text to image (${AppUserConst.textToImageLimit.toString()})",
+          isSquare: true,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Indicator(
+          color: AppColors.APPCOLOR_COLORFUL_3,
+          text: "Text to speech (${AppUserConst.textToSpeechLimit.toString()})",
+          isSquare: true,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Indicator(
+          color: AppColors.APPCOLOR_COLORFUL_4,
+          text: "Converter (${AppUserConst.converterLimit.toString()})",
+          isSquare: true,
+        ),
+        const SizedBox(
+          height: 18,
+        ),
+      ],
+    );
+  }
 
   Widget get _profileImage => Center(
         child: Container(
@@ -52,8 +148,9 @@ class _ProfileState extends BaseState<Profile> {
   Widget get _listBody => Container(
         padding: EdgeInsets.symmetric(
             vertical: dynamicHeight(.02), horizontal: dynamicWidth(.03)),
-        margin: EdgeInsetsDirectional.symmetric(horizontal: dynamicWidth(.05)),
-        height: dynamicHeight(.4),
+        margin: EdgeInsetsDirectional.symmetric(
+            horizontal: dynamicWidth(.05), vertical: dynamicHeight(.05)),
+        height: dynamicHeight(.3),
         width: dynamicWidth(1),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -137,10 +234,143 @@ class _ProfileState extends BaseState<Profile> {
     );
   }
 
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 20.0 : 16.0;
+      final radius = isTouched ? 110.0 : 100.0;
+      final widgetSize = isTouched ? 55.0 : 40.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      var data = AppUserConst.sumUserUsages();
+
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: AppColors.APPCOLOR_COLORFUL_1,
+            value: data["enhance"],
+            title: "%${data["enhance"]}",
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgeWidget: _Badge(
+              NavBarItems.NAVBAR_ENHANCE_SVG,
+              size: widgetSize,
+              borderColor: AppColors.APPCOLOR_COLORFUL_1,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 1:
+          return PieChartSectionData(
+            color: AppColors.APPCOLOR_COLORFUL_2,
+            value: data["textToImage"],
+            title: "%${data["textToImage"]}",
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgeWidget: _Badge(
+              NavBarItems.NAVBAR_ENHANCE_SVG,
+              size: widgetSize,
+              borderColor: AppColors.APPCOLOR_COLORFUL_2,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 2:
+          return PieChartSectionData(
+            color: AppColors.APPCOLOR_COLORFUL_3,
+            value: data["textToSpeech"],
+            title: "%${data["textToSpeech"]}",
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgeWidget: _Badge(
+              NavBarItems.NAVBAR_ENHANCE_SVG,
+              size: widgetSize,
+              borderColor: AppColors.APPCOLOR_COLORFUL_3,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 3:
+          return PieChartSectionData(
+            color: AppColors.APPCOLOR_COLORFUL_4,
+            value: data["converter"],
+            title: "%${data["converter"]}",
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgeWidget: _Badge(
+              NavBarItems.NAVBAR_ENHANCE_SVG,
+              size: widgetSize,
+              borderColor: AppColors.APPCOLOR_COLORFUL_4,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        default:
+          throw Exception('Oh no');
+      }
+    });
+  }
+
   List<List<dynamic>> get _cardContents => [
-        [AppColors.APPCOLOR_COLORFUL_1, "Change Profile Photos"],
+        [AppColors.APPCOLOR_COLORFUL_1, "Buy to limit"],
         [AppColors.APPCOLOR_COLORFUL_2, "Favorites"],
         [AppColors.APPCOLOR_COLORFUL_3, "Subscribe"],
         [AppColors.APPCOLOR_COLORFUL_4, "Rate us"],
       ];
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge(
+    this.svgAsset, {
+    required this.size,
+    required this.borderColor,
+  });
+  final String svgAsset;
+  final double size;
+  final Color borderColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: PieChart.defaultDuration,
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: borderColor,
+          width: 2,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(.5),
+            offset: const Offset(3, 3),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(size * .15),
+      child: Center(
+        child: SvgPicture.asset(
+          svgAsset,
+        ),
+      ),
+    );
+  }
 }

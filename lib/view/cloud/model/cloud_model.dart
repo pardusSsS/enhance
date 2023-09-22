@@ -16,6 +16,8 @@ class CloudModel {
 
   factory CloudModel.fromJson(Map<String, dynamic> json) =>
       _$CloudModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CloudModelToJson(this);
 }
 
 @JsonSerializable()
@@ -30,4 +32,6 @@ class CloudErrorModel {
 
   factory CloudErrorModel.fromJson(Map<String, dynamic> json) =>
       _$CloudErrorModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CloudErrorModelToJson(this);
 }

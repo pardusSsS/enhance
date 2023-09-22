@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610708732750",
+    "project_id": "ai-project-38ba6",
+    "storage_bucket": "ai-project-38ba6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610708732750:android:05aa74dd5ba083d4effc1f",
+        "android_client_info": {
+          "package_name": "com.example.enhance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZoiMnr2B5XqEqDOSQhY7Fum9ZDahWKN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
