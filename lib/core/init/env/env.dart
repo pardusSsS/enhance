@@ -22,6 +22,15 @@ abstract class Env {
   static final textToImageUrl = _Env.textToImageUrl.toString();
   //text-to-image end
 
+  //text-to-speech start
+  @EnviedField(varName: 'TEXT_TO_SPEECH_KEY', obfuscate: true)
+  static final textToSpeechKey = _Env.textToSpeechKey.toString();
+  @EnviedField(varName: 'TEXT_TO_SPEECH_HOST', obfuscate: true)
+  static final textToSpeechHost = _Env.textToSpeechHost.toString();
+  @EnviedField(varName: 'TEXT_TO_SPEECH_URL', obfuscate: true)
+  static final textToSpeechUrl = _Env.textToSpeechUrl.toString();
+  //text-to-speech end
+
   //firestore start
   @EnviedField(varName: 'START_PACKET_LIMIT', obfuscate: true)
   static final startPacket = _Env.startPacket.toString();

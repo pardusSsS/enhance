@@ -24,7 +24,7 @@ Future<bool> _saveImageInIsolate(List<Object?> args) async {
     // Get the documents directory
     final appDocDir = await getApplicationDocumentsDirectory();
     // Generate a unique file name for the JPG image
-    final fileName = '${DateTime.now().toIso8601String()}.png';
+    final fileName = '${DateTime.now().millisecondsSinceEpoch}.png';
     // Create the file path by combining the directory and file name
     final filePath = '${appDocDir.path}/$fileName';
     newImage = img.encodePng(currentImage!);

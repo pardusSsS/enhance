@@ -9,11 +9,8 @@ import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/view/cloud/model/cloud_model.dart';
 import 'package:enhance/view/cloud/service/text_to_image_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
-import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 
 part 'cloud_vm.g.dart';
 

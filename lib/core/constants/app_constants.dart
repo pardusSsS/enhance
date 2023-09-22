@@ -9,4 +9,7 @@ class AppConst {
   static Uint8List? textToImage;
   static String? convertedImagePath;
   static bool converterStatus = false;
+
+  static String? audioUrl;
+  static Uint8List? audioBytes;
 }

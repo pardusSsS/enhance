@@ -1,39 +1,39 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'dart:io';
-
+// ignore_for_file: library_private_types_in_public_api, unused_field, prefer_final_fields, sort_child_properties_last
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
-import 'package:enhance/core/base/widget/colorful_filter_selector.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
-import 'package:enhance/core/base/widget/image/image_body_widget.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
+import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
+import 'package:enhance/core/components/empty_lottie.dart';
 import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
-import 'package:enhance/view/filter/vm/filter_vm.dart';
+import 'package:enhance/view/speech/vm/speech_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobx/mobx.dart';
 
-class Filter extends StatefulWidget {
-  const Filter({super.key});
+class Speech extends StatefulWidget {
+  const Speech({super.key});
 
   @override
-  _FilterState createState() => _FilterState();
+  _SpeechState createState() => _SpeechState();
 }
 
-class _FilterState extends BaseState<Filter>
+class _SpeechState extends BaseState<Speech>
     with SingleTickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
   final audioPlayer = AssetsAudioPlayer();
-  final FilterViewModel _viewModel = FilterViewModel();
-
+  final SpeechViewModel _viewModel = SpeechViewModel();
   final FocusNode _focusNode = FocusNode();
   AnimationController? _controller;
   Animation? _animation;
+
+  bool _isPlaying = false;
+  Duration audioDuration = Duration.zero;
+  Duration audioPosition = Duration.zero;
 
   @override
   void initState() {
@@ -58,6 +58,7 @@ class _FilterState extends BaseState<Filter>
 
   @override
   void dispose() {
+    audioPlayer.dispose();
     if (_controller != null) {
       _controller!.dispose();
     }
@@ -68,10 +69,10 @@ class _FilterState extends BaseState<Filter>
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<FilterViewModel>(
+    return BaseView<SpeechViewModel>(
         onPageBuilder: (BuildContext context, Store value) =>
             SafeArea(child: _body),
-        viewModel: FilterViewModel());
+        viewModel: SpeechViewModel());
   }
 
   Widget get _body => InkWell(
@@ -83,53 +84,142 @@ class _FilterState extends BaseState<Filter>
           children: <Widget>[
             Observer(builder: (context) {
               return topBar(
-                context: context,
-                title: "Text To Speech",
-                width: 60,
-                height: 60,
-                // lastIconPath: _viewModel.textToImagePath != null ||
-                //         AppConst.textToImagePath != null
-                //     ? AppIcons.APPLOTTIE_DOWNLOAD
-                //     : null,
-                // onTap: _viewModel.textToImagePath != null ||
-                //         AppConst.textToImagePath != null
-                //     ? () {
-                //         dialogBuilder(context,
-                //             saveImageToGallery(AppConst.textToImage!), null);
-                //       }
-                //     : null
-              );
+                  context: context,
+                  title: "Text To Speech",
+                  width: 60,
+                  height: 60,
+                  lastIconPath:
+                      _viewModel.audioUrl != null || AppConst.audioUrl != null
+                          ? AppIcons.APPLOTTIE_DOWNLOAD
+                          : null,
+                  onTap:
+                      _viewModel.audioUrl != null || AppConst.audioUrl != null
+                          ? () {
+                              dialogBuilder(context, _viewModel.saveAudio());
+                            }
+                          : null);
             }),
-            _folderBody
+            _folderBody(context)
           ],
         ),
       );
 
-  Widget get _folderBody => Container(
-        margin: EdgeInsetsDirectional.symmetric(
-            vertical: dynamicHeight(.05), horizontal: dynamicWidth(.05)),
-        width: dynamicWidth(1),
-        height: dynamicHeight(.65),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: AppColors.APPCOLOR_NAVBAR),
-        child: Observer(builder: (context) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              _textBody,
-              IconButton(
-                  onPressed: () async {
-                    Audio audio = Audio.network(
-                        "https://samplelib.com/lib/preview/mp3/sample-3s.mp3",
-                        playSpeed: 1.5);
-                    await audioPlayer.open(audio);
-                  },
-                  icon: Icon(Icons.start))
+  Widget _folderBody(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+
+    return Container(
+      margin: EdgeInsetsDirectional.symmetric(
+          vertical: dynamicHeight(.05), horizontal: dynamicWidth(.05)),
+      width: dynamicWidth(1),
+      height: dynamicHeight(.65),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.APPCOLOR_NAVBAR),
+      child: Observer(builder: (context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            _textBody,
+            if (_viewModel.audioUrl != null || AppConst.audioUrl != null)
+              _buildAudioBody()
+            else
+              buildEmptyLottie(
+                  width: dynamicWidth(.6), height: dynamicHeight(.5))
+          ],
+        );
+      }),
+    );
+  }
+
+  AudioWidget _buildAudioBody() {
+    return AudioWidget.network(
+        onFinished: () => setState(() {
+              _isPlaying = false;
+            }),
+        onReadyToPlay: (duration) {
+          //onReadyToPlay
+          setState(() {
+            audioDuration = duration;
+          });
+        },
+        onPositionChanged: (current, duration) {
+          //onPositionChanged
+          setState(() {
+            audioPosition = current;
+          });
+        },
+        play: _isPlaying,
+        child: Container(
+          padding: EdgeInsets.only(top: dynamicHeight(.02)),
+          margin: EdgeInsets.only(top: dynamicHeight(.05)),
+          width: dynamicWidth(.8),
+          height: dynamicHeight(.4),
+          decoration: BoxDecoration(
+              color: AppColors.APPCOLOR_BLUE_2.withOpacity(.7),
+              borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            children: [
+              Center(
+                  child: SizedBox(
+                width: dynamicWidth(.7),
+                height: 65,
+                child: const LottieCustomWidget(
+                  path: AppIcons.APPLOTTIE_BLUE_AI,
+                  width: 35,
+                  height: 35,
+                ),
+              )),
+              SizedBox(
+                width: dynamicWidth(.7),
+                height: dynamicHeight(.2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _viewModel.fetchAudio("audioUrl"),
+                      child: LottieCustomWidget(
+                          path: AppIcons.APPLOTTIE_AUDIO,
+                          width: dynamicWidth(.5),
+                          height: dynamicHeight(.9)),
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          setState(() {
+                            _isPlaying = !_isPlaying;
+                          });
+                        },
+                        icon: Icon(
+                          !_isPlaying ? Icons.arrow_right : Icons.pause,
+                          size: 50,
+                        ))
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: dynamicWidth(.5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildTimeBody(audioDuration),
+                    _buildTimeBody(audioPosition),
+                  ],
+                ),
+              ),
             ],
-          );
-        }),
-      );
+          ),
+        ),
+        url: _viewModel.audioUrl ?? AppConst.audioUrl ?? "");
+  }
+
+  Container _buildTimeBody(Duration duration) {
+    return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: AppColors.APPCOLOR_BLUE_3,
+            borderRadius: BorderRadius.circular(15)),
+        child: Text(formatTime(duration)));
+  }
 
   Widget get _textBody => Container(
         margin: EdgeInsets.only(top: dynamicHeight(.02)),
@@ -178,16 +268,22 @@ class _FilterState extends BaseState<Filter>
             AppIcons.APPICON_RIGHT_ARROW,
           ),
           onPressed: () async {
-            // if (_textController.text.isNotEmpty) {
-            //   await DefaultCacheManager().emptyCache().then((value) =>
-            //       dialogBuilder(
-            //           context,
-            //           _viewModel.initCloudModel(text: _textController.text),
-            //           null));
-            // }
+            if (_textController.text.isNotEmpty) {
+              await dialogBuilder(context,
+                  _viewModel.initSpeechModel(text: _textController.text));
+            }
           },
         ),
       );
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
+  }
 
   // Widget get _body => Stack(
   //       children: <Widget>[

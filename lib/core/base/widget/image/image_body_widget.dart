@@ -1,5 +1,8 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:io';
 
+import 'package:enhance/core/components/empty_lottie.dart';
 import 'package:enhance/core/constants/color_constans.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +40,9 @@ ClipRRect _buildImage({required Key key, required String imagePath}) {
 
 Widget nullImageBody({required BuildContext context}) {
   return Container(
+      child: buildEmptyLottie(
+          width: MediaQuery.of(context).size.width * (.6),
+          height: MediaQuery.of(context).size.height * (.5)),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * .4,
       decoration: BoxDecoration(

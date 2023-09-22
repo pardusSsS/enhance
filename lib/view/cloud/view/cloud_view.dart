@@ -9,6 +9,7 @@ import 'package:enhance/core/base/widget/image/text_to_image_body.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/base/widget/random_colorful.dart';
 import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
+import 'package:enhance/core/components/empty_lottie.dart';
 import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
@@ -102,7 +103,7 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
                           AppConst.textToImagePath != null
                       ? () {
                           dialogBuilder(context,
-                              saveImageToGallery(AppConst.textToImage!), null);
+                              saveImageToGallery(AppConst.textToImage!));
                         }
                       : null);
             }),
@@ -130,6 +131,9 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
                     context: context,
                     key: const Key("textToImage"),
                     imagePath: AppConst.textToImagePath!)
+              else
+                buildEmptyLottie(
+                    width: dynamicWidth(.6), height: dynamicHeight(.5))
             ],
           );
         }),
@@ -184,10 +188,8 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
           onPressed: () async {
             if (_textController.text.isNotEmpty) {
               await DefaultCacheManager().emptyCache().then((value) =>
-                  dialogBuilder(
-                      context,
-                      _viewModel.initCloudModel(text: _textController.text),
-                      null));
+                  dialogBuilder(context,
+                      _viewModel.initCloudModel(text: _textController.text)));
             }
           },
         ),

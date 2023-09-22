@@ -10,20 +10,20 @@ import 'package:enhance/core/base/widget/wait_dialog/wait_dialog.dart';
 import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
-import 'package:enhance/view/resize/service/convert_and_save_to_gallery.dart';
-import 'package:enhance/view/resize/vm/converter_vm.dart';
+import 'package:enhance/view/convert/service/convert_and_save_to_gallery.dart';
+import 'package:enhance/view/convert/vm/converter_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
-class Resize extends StatefulWidget {
-  const Resize({super.key});
+class Converter extends StatefulWidget {
+  const Converter({super.key});
 
   @override
-  _ResizeState createState() => _ResizeState();
+  _ConverterState createState() => _ConverterState();
 }
 
-class _ResizeState extends BaseState<Resize> {
+class _ConverterState extends BaseState<Converter> {
   ConverterViewModel _viewModel = ConverterViewModel();
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _ResizeState extends BaseState<Resize> {
               height: 60,
               width: 60,
               context: context,
-              title: "Resize",
+              title: "Converter",
               lastIconPath: _viewModel.converterStatus != false ||
                       AppConst.converterStatus != false
                   ? AppIcons.APPLOTTIE_DOWNLOAD
@@ -58,8 +58,7 @@ class _ResizeState extends BaseState<Resize> {
                       dialogBuilder(
                           context,
                           saveConvertedImage(
-                              path: AppConst.convertedImagePath!),
-                          null);
+                              path: AppConst.convertedImagePath!));
                     }
                   : null),
           AppConst.imagePath != null
@@ -149,12 +148,12 @@ class _ResizeState extends BaseState<Resize> {
         onTap: () async {
           if (AppConst.imagePath != null || AppConst.enhangedImage != null) {
             await dialogBuilder(
-                context,
-                changeFileKind(
-                    fileKind: _viewModel.toFileKind,
-                    enhpath: AppConst.enhangedImage,
-                    unenhpath: AppConst.imagePath),
-                null);
+              context,
+              changeFileKind(
+                  fileKind: _viewModel.toFileKind,
+                  enhpath: AppConst.enhangedImage,
+                  unenhpath: AppConst.imagePath),
+            );
             _viewModel.updateConverterStatus(status: true);
           }
         },

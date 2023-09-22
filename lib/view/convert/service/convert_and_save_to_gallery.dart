@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:enhance/core/constants/app_constants.dart';
-import 'package:enhance/view/resize/vm/converter_vm.dart';
+import 'package:enhance/view/convert/vm/converter_vm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';

@@ -5,7 +5,6 @@ import 'package:enhance/core/base/view/base_widget.dart';
 import 'package:enhance/core/base/widget/common_top_bar.dart';
 import 'package:enhance/core/base/widget/indicator.dart';
 import 'package:enhance/core/base/widget/lottie_widget.dart';
-import 'package:enhance/core/constants/app_constants.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
 import 'package:enhance/core/constants/navbar_constants.dart';
@@ -25,9 +24,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends BaseState<Profile> {
   int touchedIndex = 0;
+  Map<String, dynamic> data = {};
+
   @override
   Widget build(BuildContext context) {
     return BaseView<ProfileViewModel>(
+        onModelReady: () {
+          Future.microtask(() => setState(() {
+                data = AppUserConst.sumUserUsages();
+              }));
+        },
         onPageBuilder: (BuildContext context, Store value) =>
             SafeArea(child: _body),
         viewModel: ProfileViewModel());
@@ -241,7 +247,6 @@ class _ProfileState extends BaseState<Profile> {
       final radius = isTouched ? 110.0 : 100.0;
       final widgetSize = isTouched ? 55.0 : 40.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      var data = AppUserConst.sumUserUsages();
 
       switch (i) {
         case 0:

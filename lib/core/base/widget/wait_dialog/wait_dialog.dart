@@ -2,13 +2,12 @@ import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/base/widget/snackbars/app_snackbars.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
-import 'package:enhance/view/resize/vm/converter_vm.dart';
+import 'package:enhance/view/convert/vm/converter_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:ndialog/ndialog.dart';
 
-Future dialogBuilder(
-    BuildContext context, Future onInit, Function()? method) async {
+Future dialogBuilder(BuildContext context, Future onInit) async {
   DefaultCacheManager().emptyCache();
   CustomProgressDialog.future(
     context,

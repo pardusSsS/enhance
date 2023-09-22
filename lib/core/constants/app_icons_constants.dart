@@ -19,4 +19,7 @@ class AppIcons {
   static const String APPLOTTIE_SIZE_CROSS = "assets/lotties/size-cross.json";
   static const String APPLOTTIE_RIGHT_ARROW = "assets/lotties/right-arrow.json";
   static const String APPLOTTIE_DOWNLOAD = "assets/lotties/download.json";
+  static const String APPLOTTIE_AUDIO = "assets/lotties/audio.json";
+  static const String APPLOTTIE_BLUE_AI = "assets/lotties/blue-ai.json";
+  static const String APPLOTTIE_EMPTY = "assets/lotties/empty.json";
 }

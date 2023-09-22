@@ -1,14 +1,13 @@
 import 'package:enhance/core/base/model/first_usage_limit_model.dart';
-import 'package:enhance/core/constants/app_constants.dart';
 
 class AppUserConst {
   static String? userUid;
 
   //firestore
-  static int? enhanceLimit;
-  static int? textToSpeechLimit;
-  static int? textToImageLimit;
-  static int? converterLimit;
+  static int enhanceLimit = 0;
+  static int textToSpeechLimit = 0;
+  static int textToImageLimit = 0;
+  static int converterLimit = 0;
 
   static setUserUsageToLocal(UsageLimitModel data) {
     enhanceLimit = data.enhance;
@@ -18,15 +17,13 @@ class AppUserConst {
   }
 
   static Map<String, dynamic> sumUserUsages() {
-    var sum = enhanceLimit! +
-        converterLimit! +
-        textToImageLimit! +
-        textToSpeechLimit!;
+    var sum =
+        enhanceLimit + converterLimit + textToImageLimit + textToSpeechLimit;
 
-    var perEnhance = (enhanceLimit! * 100) / sum;
-    var perConverter = (enhanceLimit! * 100) / sum;
-    var perTextToImage = (textToImageLimit! * 100) / sum;
-    var perTextToSpeech = (textToSpeechLimit! * 100) / sum;
+    var perEnhance = (enhanceLimit * 100) / sum;
+    var perConverter = (enhanceLimit * 100) / sum;
+    var perTextToImage = (textToImageLimit * 100) / sum;
+    var perTextToSpeech = (textToSpeechLimit * 100) / sum;
 
     return {
       "enhance": double.parse(perEnhance.toStringAsFixed(0)),

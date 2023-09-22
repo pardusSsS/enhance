@@ -19,9 +19,13 @@ class NavBarItems {
 //appbar constants list
   static List<Map<String, dynamic>> appBarItems = [
     buildNavBarItemMap(
-        key: const Key("filters"), icon: NAVBAR_FILTER_SVG, text: 'Filters'),
+        key: const Key("textToSpeech"),
+        icon: NAVBAR_FILTER_SVG,
+        text: 'Text to \nspeech'),
     buildNavBarItemMap(
-        key: const Key("resize"), icon: NAVBAR_RESIZE_SVG, text: 'Resize'),
+        key: const Key("converter"),
+        icon: NAVBAR_RESIZE_SVG,
+        text: 'Converter'),
     buildNavBarItemMap(
         key: const Key("enhance"), icon: NAVBAR_ENHANCE_SVG, text: 'Enhance'),
     buildNavBarItemMap(

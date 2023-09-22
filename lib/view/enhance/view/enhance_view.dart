@@ -51,8 +51,8 @@ class _EnhanceState extends BaseState<Enhance> {
                 },
                 onTap: () {
                   if (AppConst.enhangedImage != null) {
-                    dialogBuilder(context,
-                        saveImageToGallery(AppConst.enhangedImage!), null);
+                    dialogBuilder(
+                        context, saveImageToGallery(AppConst.enhangedImage!));
                   }
                 },
                 width: 60,
@@ -216,7 +216,7 @@ class _EnhanceState extends BaseState<Enhance> {
 
   Widget get _buildEnhanceStartButton => GestureDetector(
         onTap: () {
-          dialogBuilder(context, _viewModel.enhanceImageService(), null);
+          dialogBuilder(context, _viewModel.enhanceImageService());
         },
         child: Container(
           height: dynamicHeight(.05),
