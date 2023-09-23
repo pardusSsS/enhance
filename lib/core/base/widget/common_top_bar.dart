@@ -14,6 +14,7 @@ Widget topBar(
             vertical: MediaQuery.of(context).size.height * .01),
         height: MediaQuery.of(context).size.height * .05,
         child: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,

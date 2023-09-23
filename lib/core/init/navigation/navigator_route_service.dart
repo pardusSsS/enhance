@@ -15,7 +15,7 @@ class NavigationRouteManager {
       case RouteConstants.SPLASH:
         return _navigateToFadeDefault(const Splash(), settings);
       case RouteConstants.PAY:
-        return _navigateToSlide(const Pay(), settings);
+        return _navigateToDefault(const Pay(), settings);
       case RouteConstants.BACK:
         _previousScreen(context);
         return null;

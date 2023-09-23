@@ -8,7 +8,10 @@ import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
 import 'package:enhance/core/constants/navbar_constants.dart';
+import 'package:enhance/core/constants/route_constants.dart';
 import 'package:enhance/core/constants/user_constants.dart';
+import 'package:enhance/core/init/navigation/navigator_route_service.dart';
+import 'package:enhance/core/init/navigation/navigator_service.dart';
 import 'package:enhance/view/profile/vm/profile_vm.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +171,9 @@ class _ProfileState extends BaseState<Profile> {
         itemCount: _cardContents.length,
         itemBuilder: (BuildContext context, int index) {
           return _buildListCard(
+              onTap: () => index == 0
+                  ? NavigationService.instance.navigate(RouteConstants.PAY)
+                  : null,
               title: _cardContents[index][1],
               color: _cardContents[index][0],
               lottie: index == _cardContents.length - 1

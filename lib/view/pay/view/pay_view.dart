@@ -6,6 +6,8 @@ import 'package:enhance/core/base/widget/lottie_widget.dart';
 import 'package:enhance/core/constants/app_icons_constants.dart';
 import 'package:enhance/core/constants/color_constans.dart';
 import 'package:enhance/core/constants/pay_const.dart';
+import 'package:enhance/core/constants/route_constants.dart';
+import 'package:enhance/core/init/navigation/navigator_service.dart';
 import 'package:enhance/view/enhance/view/enhance_view.dart';
 import 'package:enhance/view/pay/config/payment_configurations.dart';
 import 'package:enhance/view/pay/vm/pay_vm.dart';
@@ -49,7 +51,8 @@ class _PayState extends BaseState<Pay> {
               context: context,
               title: const LottieCustomWidget(
                   path: AppIcons.APPLOTTIE_WELCOME, width: 120, height: 120),
-              lastIconPath: AppIcons.APPLOTTIE_CROSS),
+              lastIconPath: AppIcons.APPLOTTIE_CROSS,
+              onTap: () => Navigator.pop(context)),
           _buildCarousel,
           _cardBody(),
           _packetBody(),
