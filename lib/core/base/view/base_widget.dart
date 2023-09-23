@@ -38,13 +38,15 @@ class _BaseViewState extends BaseState<BaseView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: dynamicWidth(1),
-      height: dynamicHeight(1),
-      padding: EdgeInsets.zero,
-      margin: EdgeInsets.zero,
-      color: AppColors.APPCOLOR_BLUE_4,
-      child: widget.onPageBuilder(context, widget.viewModel),
+    return Scaffold(
+      body: Container(
+        width: dynamicWidth(1),
+        height: dynamicHeight(1),
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        color: AppColors.APPCOLOR_BLUE_4,
+        child: widget.onPageBuilder(context, widget.viewModel),
+      ),
     );
   }
 }

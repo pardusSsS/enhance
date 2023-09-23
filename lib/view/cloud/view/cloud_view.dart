@@ -93,8 +93,6 @@ class _CloudState extends BaseState<Cloud> with SingleTickerProviderStateMixin {
               return topBar(
                   context: context,
                   title: "Text To Image",
-                  width: 60,
-                  height: 60,
                   lastIconPath: _viewModel.textToImagePath != null ||
                           AppConst.textToImagePath != null
                       ? AppIcons.APPLOTTIE_DOWNLOAD

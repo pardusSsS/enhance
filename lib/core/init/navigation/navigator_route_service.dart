@@ -2,6 +2,8 @@ import 'package:enhance/core/base/widget/app_page_builder.dart';
 import 'package:enhance/core/constants/route_constants.dart';
 import 'package:enhance/core/init/navigation/not_found.dart';
 import 'package:enhance/core/init/navigation/transitions/fade_route.dart';
+import 'package:enhance/core/init/navigation/transitions/slide_route.dart';
+import 'package:enhance/view/pay/view/pay_view.dart';
 import 'package:enhance/view/splash/view/splash_view.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,8 @@ class NavigationRouteManager {
         return _navigateToDefault(AppPagesBuilder(), settings);
       case RouteConstants.SPLASH:
         return _navigateToFadeDefault(const Splash(), settings);
+      case RouteConstants.PAY:
+        return _navigateToSlide(const Pay(), settings);
       case RouteConstants.BACK:
         _previousScreen(context);
         return null;
@@ -30,6 +34,10 @@ class NavigationRouteManager {
 
   static PageRoute _navigateToFadeDefault(Widget page, RouteSettings settings) {
     return FadeRoute(page: page, settings: settings);
+  }
+
+  static PageRoute _navigateToSlide(Widget page, RouteSettings settings) {
+    return SlideBottomRoute(page: page, settings: settings);
   }
 
   static _previousScreen(BuildContext context) {

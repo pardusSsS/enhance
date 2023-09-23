@@ -44,8 +44,6 @@ class _ConverterState extends BaseState<Converter> {
       return Column(
         children: <Widget>[
           topBar(
-              height: 60,
-              width: 60,
               context: context,
               title: "Converter",
               lastIconPath: _viewModel.converterStatus != false ||

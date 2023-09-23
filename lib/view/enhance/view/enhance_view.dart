@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, prefer_final_fields, sort_child_properties_last, use_build_context_synchronously, prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:enhance/core/base/state/base_state.dart';
 import 'package:enhance/core/base/view/base_widget.dart';
@@ -55,8 +57,6 @@ class _EnhanceState extends BaseState<Enhance> {
                         context, saveImageToGallery(AppConst.enhangedImage!));
                   }
                 },
-                width: 60,
-                height: 60,
                 context: context,
                 title: "Enhance",
                 lastIconPath: AppConst.enhangedImage != null
@@ -100,8 +100,13 @@ class _EnhanceState extends BaseState<Enhance> {
               ? enahancedImageBody(
                   context: context,
                   key: const Key("enhancedImage"),
-                  image: Image.memory(
-                      _viewModel.enhancedEditImage ?? AppConst.enhangedImage!))
+                  enhImage: Image.memory(AppConst.enhangedImage!),
+                  unenhImage: Image.file(
+                    File(AppConst.imagePath!),
+                    colorBlendMode: BlendMode.color,
+                    fit: BoxFit.contain,
+                  ),
+                )
               : imageBody(
                   context: context,
                   key: const Key("unEnhanceImage"),

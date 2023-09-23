@@ -5,11 +5,9 @@ Widget topBar(
     {required context,
     String? leadingIconPath,
     String? lastIconPath,
-    required double width,
-    required double height,
     Function()? onTap,
     Function()? leadingOnTap,
-    required String title}) {
+    required dynamic title}) {
   return SafeArea(
     child: Container(
         margin: EdgeInsetsDirectional.symmetric(
@@ -19,12 +17,14 @@ Widget topBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          title: Text(title,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-              )),
+          title: title.runtimeType == String
+              ? Text(title,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ))
+              : title,
           leading: leadingIconPath != null
               ? IconButton(
                   onPressed: leadingOnTap,

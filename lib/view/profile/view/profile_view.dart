@@ -41,7 +41,7 @@ class _ProfileState extends BaseState<Profile> {
 
   Widget get _body => Column(
         children: <Widget>[
-          topBar(width: 60, height: 60, context: context, title: "Profile"),
+          topBar(context: context, title: "Profile"),
           //_profileImage,
 
           _buildChartArea(),

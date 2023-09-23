@@ -86,8 +86,6 @@ class _SpeechState extends BaseState<Speech>
               return topBar(
                   context: context,
                   title: "Text To Speech",
-                  width: 60,
-                  height: 60,
                   lastIconPath:
                       _viewModel.audioUrl != null || AppConst.audioUrl != null
                           ? AppIcons.APPLOTTIE_DOWNLOAD

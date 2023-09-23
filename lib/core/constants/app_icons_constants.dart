@@ -22,4 +22,8 @@ class AppIcons {
   static const String APPLOTTIE_AUDIO = "assets/lotties/audio.json";
   static const String APPLOTTIE_BLUE_AI = "assets/lotties/blue-ai.json";
   static const String APPLOTTIE_EMPTY = "assets/lotties/empty.json";
+  static const String APPLOTTIE_STORE = "assets/lotties/store.json";
+  static const String APPLOTTIE_SHOPPING_CARD =
+      "assets/lotties/shopping-card.json";
+  static const String APPLOTTIE_WELCOME = "assets/lotties/welcome.json";
 }
