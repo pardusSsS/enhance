@@ -39,6 +39,7 @@ class _BaseViewState extends BaseState<BaseView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: dynamicWidth(1),
         height: dynamicHeight(1),
